@@ -16,8 +16,6 @@ injectGlobal`
       text-decoration:none;
   }
   input,
-  button{
-      &:focus,
-      &:active{outline:none}
+  button{&:focus,&:active{outline:none}
   }
 `;
