@@ -9,9 +9,14 @@ const Container = styled.div``;
 interface IProps {
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  loading: boolean;
 }
 
-const HomePresenter: React.SFC<IProps> = ({ isMenuOpen, toggleMenu }) => (
+const HomePresenter: React.SFC<IProps> = ({
+  isMenuOpen,
+  toggleMenu,
+  loading
+}) => (
   <Container>
     <Helmet>
       <title>Home | Number</title>
@@ -28,7 +33,7 @@ const HomePresenter: React.SFC<IProps> = ({ isMenuOpen, toggleMenu }) => (
         }
       }}
     >
-      <button onClick={toggleMenu}>Open sidebar</button>
+      {!loading && <button onClick={toggleMenu}>Open sidebar</button>}
     </Sidebar>
   </Container>
 );
