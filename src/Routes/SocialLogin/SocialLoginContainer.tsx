@@ -1,5 +1,5 @@
 import React from "react";
-import { Mutation } from "react-apollo";
+import { Mutation, MutationFn } from "react-apollo";
 import { RouteComponentProps } from "react-router-dom";
 import { facebookConnect, facebookConnectVariables } from "../../types/api";
 import SocialLoginPresenter from "./SocialLoginPresenter";
@@ -20,13 +20,33 @@ interface IState {
 interface IProps extends RouteComponentProps<any> {}
 
 class SocialLoginContainer extends React.Component<IProps, IState> {
+  public mutation: MutationFn;
   public render() {
+    const { firstName, lastName, email, fbId } = this.state;
     return (
-      <LoginMutation mutation={FACEBOOK_CONNECT}>
-        <SocialLoginPresenter />
+      <LoginMutation
+        mutation={FACEBOOK_CONNECT}
+        variables={{
+          email,
+          fbId,
+          firstName,
+          lastName
+        }}
+      >
+        {(facebookConnect, { loading }) => {
+          this.mutation = facebookConnect;
+          return <SocialLoginPresenter loginCallback={this.callback} />;
+        }}
       </LoginMutation>
     );
   }
+
+  public callback = fbData => {
+    this.setState({
+      email: fbData.email
+    });
+    this.mutation();
+  };
 }
 
 export default SocialLoginContainer;
