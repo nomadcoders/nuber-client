@@ -22,6 +22,29 @@ export interface toggleDriving {
 // This file was automatically generated and should not be edited.
 
 // ====================================================
+// GraphQL mutation operation: editPlace
+// ====================================================
+
+export interface editPlace_EditPlace {
+  __typename: "EditPlaceResponse";
+  ok: boolean;
+  error: string | null;
+}
+
+export interface editPlace {
+  EditPlace: editPlace_EditPlace;
+}
+
+export interface editPlaceVariables {
+  placeId: number;
+  isFav?: boolean | null;
+}
+
+
+/* tslint:disable */
+// This file was automatically generated and should not be edited.
+
+// ====================================================
 // GraphQL mutation operation: addPlace
 // ====================================================
 
