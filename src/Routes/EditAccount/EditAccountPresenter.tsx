@@ -6,7 +6,6 @@ import Form from "../../Components/Form";
 import Header from "../../Components/Header";
 import Input from "../../Components/Input";
 import styled from "../../typed-components";
-import { updateProfile } from "../../types/api";
 
 const Container = styled.div``;
 
