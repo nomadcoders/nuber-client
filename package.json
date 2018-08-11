@@ -6,6 +6,7 @@
     "@types/react-router-dom": "^4.3.0",
     "apollo-boost": "^0.1.12",
     "axios": "^0.18.0",
+    "google-maps-react": "^2.0.2",
     "graphql": "^0.13.2",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
@@ -29,6 +30,7 @@
     "codegen": "apollo codegen:generate src/types/api.d.ts --queries='src/**/!(*.local).ts' --addTypename --schema schema.json --target typescript --outputFlat"
   },
   "devDependencies": {
+    "@types/googlemaps": "^3.30.11",
     "@types/jest": "^23.3.1",
     "@types/node": "^10.5.7",
     "@types/prop-types": "^15.5.4",
