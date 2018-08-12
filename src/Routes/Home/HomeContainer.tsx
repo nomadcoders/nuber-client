@@ -1,7 +1,8 @@
 import React from "react";
 import { Query } from "react-apollo";
 import ReactDOM from "react-dom";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps } from "react-router-dom";
+import { toast } from "react-toastify";
 import { geoCode } from "../../mapHelpers";
 import { USER_PROFILE } from "../../sharedQueries";
 import { userProfile } from "../../types/api";
@@ -14,6 +15,9 @@ interface IState {
   toLng: number;
   lat: number;
   lng: number;
+  distance?: string;
+  duration?: string;
+  price?: number;
 }
 
 interface IProps extends RouteComponentProps<any> {
@@ -179,7 +183,32 @@ class HomeContainer extends React.Component<IProps, IState> {
       },
       suppressMarkers: true
     };
-    const directionService: google.maps.DirectionsService = new google.maps.DirectionsService();
+    this.directions = new google.maps.DirectionsRenderer(renderOptions);
+    const directionsService: google.maps.DirectionsService = new google.maps.DirectionsService();
+    const to = new google.maps.LatLng(toLat, toLng);
+    const from = new google.maps.LatLng(lat, lng);
+    const directionsOptions: google.maps.DirectionsRequest = {
+      destination: to,
+      origin: from,
+      travelMode: google.maps.TravelMode.DRIVING
+    };
+    directionsService.route(directionsOptions, (result, status) => {
+      if (status === google.maps.DirectionsStatus.OK) {
+        const { routes } = result;
+        const {
+          distance: { text: distance },
+          duration: { text: duration }
+        } = routes[0].legs[0];
+        this.setState({
+          distance,
+          duration
+        });
+        this.directions.setDirections(result);
+        this.directions.setMap(this.map);
+      } else {
+        toast.error("There is no route there, you have to ");
+      }
+    });
   };
 }
 
