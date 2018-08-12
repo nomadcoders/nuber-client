@@ -1,12 +1,17 @@
 import React from "react";
-import { Query } from "react-apollo";
+import { graphql, MutationFn, Query } from "react-apollo";
 import ReactDOM from "react-dom";
 import { RouteComponentProps } from "react-router-dom";
 import { toast } from "react-toastify";
 import { geoCode } from "../../mapHelpers";
 import { USER_PROFILE } from "../../sharedQueries";
-import { userProfile } from "../../types/api";
+import {
+  reportMovement,
+  reportMovementVariables,
+  userProfile
+} from "../../types/api";
 import HomePresenter from "./HomePresenter";
+import { REPORT_LOCATION } from "./HomeQueries";
 
 interface IState {
   isMenuOpen: boolean;
@@ -22,6 +27,7 @@ interface IState {
 
 interface IProps extends RouteComponentProps<any> {
   google: any;
+  reportLocation: MutationFn;
 }
 
 class ProfileQuery extends Query<userProfile> {}
@@ -125,11 +131,18 @@ class HomeContainer extends React.Component<IProps, IState> {
     );
   };
   public handleGeoWatchSuccess = (position: Position) => {
+    const { reportLocation } = this.props;
     const {
       coords: { latitude, longitude }
     } = position;
     this.userMarker.setPosition({ lat: latitude, lng: longitude });
     this.map.panTo({ lat: latitude, lng: longitude });
+    reportLocation({
+      variables: {
+        lat: parseFloat(latitude.toFixed(10)),
+        lng: parseFloat(longitude.toFixed(10))
+      }
+    });
   };
   public handleGeoWatchError = () => {
     console.log("Error watching you");
@@ -232,4 +245,9 @@ class HomeContainer extends React.Component<IProps, IState> {
   };
 }
 
-export default HomeContainer;
+export default graphql<any, reportMovement, reportMovementVariables>(
+  REPORT_LOCATION,
+  {
+    name: "reportLocation"
+  }
+)(HomeContainer);
