@@ -109,6 +109,7 @@ const HomePresenter: React.SFC<IProps> = ({
           value={`Request Ride ($${price})`}
         />
       )}
+
       <Map innerRef={mapRef} />
     </Sidebar>
   </Container>
