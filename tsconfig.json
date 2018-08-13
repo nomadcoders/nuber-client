@@ -16,7 +16,7 @@
     "noImplicitAny": false,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": false,
+    "noUnusedLocals": true,
     "esModuleInterop": true,
     "skipLibCheck": true
   },
