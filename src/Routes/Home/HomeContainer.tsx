@@ -6,12 +6,13 @@ import { toast } from "react-toastify";
 import { geoCode } from "../../mapHelpers";
 import { USER_PROFILE } from "../../sharedQueries";
 import {
+  getDrivers,
   reportMovement,
   reportMovementVariables,
   userProfile
 } from "../../types/api";
 import HomePresenter from "./HomePresenter";
-import { REPORT_LOCATION } from "./HomeQueries";
+import { GET_NEARBY_DRIVERS, REPORT_LOCATION } from "./HomeQueries";
 
 interface IState {
   isMenuOpen: boolean;
@@ -31,6 +32,7 @@ interface IProps extends RouteComponentProps<any> {
 }
 
 class ProfileQuery extends Query<userProfile> {}
+class NearbyQueries extends Query<getDrivers> {}
 
 class HomeContainer extends React.Component<IProps, IState> {
   public mapRef: any;
@@ -64,17 +66,22 @@ class HomeContainer extends React.Component<IProps, IState> {
     const { isMenuOpen, toAddress, price } = this.state;
     return (
       <ProfileQuery query={USER_PROFILE}>
-        {({ loading }) => (
-          <HomePresenter
-            loading={loading}
-            isMenuOpen={isMenuOpen}
-            toggleMenu={this.toggleMenu}
-            mapRef={this.mapRef}
-            toAddress={toAddress}
-            onInputChange={this.onInputChange}
-            price={price}
-            onAddressSubmit={this.onAddressSubmit}
-          />
+        {({ data, loading }) => (
+          <NearbyQueries query={GET_NEARBY_DRIVERS}>
+            {() => (
+              <HomePresenter
+                loading={loading}
+                isMenuOpen={isMenuOpen}
+                toggleMenu={this.toggleMenu}
+                mapRef={this.mapRef}
+                toAddress={toAddress}
+                onInputChange={this.onInputChange}
+                price={price}
+                data={data}
+                onAddressSubmit={this.onAddressSubmit}
+              />
+            )}
+          </NearbyQueries>
         )}
       </ProfileQuery>
     );
@@ -232,7 +239,7 @@ class HomeContainer extends React.Component<IProps, IState> {
         this.setPrice
       );
     } else {
-      toast.error("There is no route there, you have to ");
+      toast.error("There is no route there, you have to swim ");
     }
   };
   public setPrice = () => {
