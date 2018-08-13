@@ -275,23 +275,38 @@ class HomeContainer extends React.Component<IProps, IState> {
       if (ok && drivers) {
         for (const driver of drivers) {
           if (driver && driver.lastLat && driver.lastLng) {
-            console.log(driver);
-            const markerOptions: google.maps.MarkerOptions = {
-              icon: {
-                path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
-                scale: 5
-              },
-              position: {
+            const exisitingDriver:
+              | google.maps.Marker
+              | undefined = this.drivers.find(
+              (driverMarker: google.maps.Marker) => {
+                const markerID = driverMarker.get("ID");
+                return markerID === driver.id;
+              }
+            );
+            if (exisitingDriver) {
+              exisitingDriver.setPosition({
                 lat: driver.lastLat,
                 lng: driver.lastLng
-              }
-            };
-            const newMarker: google.maps.Marker = new google.maps.Marker(
-              markerOptions
-            );
-            this.drivers.push(newMarker);
-            newMarker.set("ID", driver.id);
-            newMarker.setMap(this.map);
+              });
+              exisitingDriver.setMap(this.map);
+            } else {
+              const markerOptions: google.maps.MarkerOptions = {
+                icon: {
+                  path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+                  scale: 5
+                },
+                position: {
+                  lat: driver.lastLat,
+                  lng: driver.lastLng
+                }
+              };
+              const newMarker: google.maps.Marker = new google.maps.Marker(
+                markerOptions
+              );
+              this.drivers.push(newMarker);
+              newMarker.set("ID", driver.id);
+              newMarker.setMap(this.map);
+            }
           }
         }
       }
