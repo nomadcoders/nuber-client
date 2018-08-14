@@ -128,9 +128,22 @@ class HomeContainer extends React.Component<IProps, IState> {
                     {({ subscribeToMore, data: nearbyRide }) => {
                       const rideSubscriptionOptions: SubscribeToMoreOptions = {
                         document: SUBSCRIBE_NEARBY_RIDES,
-                        updateQuery: this.handleSubscriptionUpdate
+                        updateQuery: (prev, { subscriptionData }) => {
+                          if (!subscriptionData.data) {
+                            return prev;
+                          }
+                          const newObject = Object.assign({}, prev, {
+                            GetNearbyRide: {
+                              ...prev.GetNearbyRide,
+                              ride: subscriptionData.data.NearbyRideSubscription
+                            }
+                          });
+                          return newObject;
+                        }
                       };
-                      subscribeToMore(rideSubscriptionOptions);
+                      if (isDriving) {
+                        subscribeToMore(rideSubscriptionOptions);
+                      }
                       return (
                         <AcceptRide mutation={ACCEPT_RIDE}>
                           {acceptRideFn => (
@@ -401,9 +414,6 @@ class HomeContainer extends React.Component<IProps, IState> {
         isDriving
       });
     }
-  };
-  public handleSubscriptionUpdate = data => {
-    console.log(data);
   };
 }
 
