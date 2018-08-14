@@ -1,8 +1,13 @@
 import React from "react";
 import styled from "../../typed-components";
+import { getRide } from "../../types/api";
 
 const Container = styled.div``;
 
-const RidePresenter: React.SFC = () => <Container>Ride</Container>;
+interface IProps {
+  data?: getRide;
+}
+
+const RidePresenter: React.SFC<IProps> = () => <Container>Ride</Container>;
 
 export default RidePresenter;
