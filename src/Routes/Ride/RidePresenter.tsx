@@ -116,7 +116,7 @@ const RidePresenter: React.SFC<IProps> = ({
               )}
             {ride.driver.id === user.id ||
               (ride.passenger.id === user.id &&
-                ride.status === "ACCEPTED" && (
+                ride.status !== "REQUESTING" && (
                   <Link to={`/chat/${ride.chatId}`}>
                     <ExtendedButton value={"Chat"} onClick={null} />
                   </Link>
