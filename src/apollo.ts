@@ -39,7 +39,7 @@ const wsLink = new WebSocketLink({
     },
     reconnect: true
   },
-  uri: "ws://localhost:4000/subscriptions"
+  uri: "ws://localhost:4000/subscription"
 });
 
 const combinedLinks = split(
