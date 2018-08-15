@@ -31,3 +31,13 @@ export const SEND_MESSAGE = gql`
     }
   }
 `;
+
+export const SUBSCRIBE_TO_MESSAGES = gql`
+  subscription messageSubscription {
+    MessageSubscription {
+      id
+      text
+      userId
+    }
+  }
+`;
